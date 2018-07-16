@@ -5,71 +5,15 @@
   >
       <topic-panel :class="this.shouldShowTopicPanel"
       />
-      <!-- <map-panel>
-        <cyclomedia-widget v-if="this.shouldLoadCyclomediaWidget"
-                           slot="cycloWidget"
-                           v-show="cyclomediaActive"
-        />
-        <pictometry-widget v-if="this.shouldLoadPictometryWidget"
-                           slot="pictWidget"
-                           v-show="pictometryActive"
-                           :apiKey="this.ak"
-                           :secretKey="this.sk"
-        >
-          <png-marker v-if="this.pictometryShowAddressMarker"
-                      :latlng="[this.geocodeData.geometry.coordinates[1], this.geocodeData.geometry.coordinates[0]]"
-                      :icon="'markers.png'"
-                      :height="60"
-                      :width="40"
-                      :offsetX="0"
-                      :offsetY="0"
-          />
-          <layer v-if="this.pictometryActive" />
-          <png-marker v-if="this.cyclomediaActive && this.pictometryActive"
-                      :latlng="cycloLatlng"
-                      :icon="'camera2.png'"
-                      :height="20"
-                      :width="30"
-                      :offsetX="-2"
-                      :offsetY="-2"
-          />
-          <view-cone v-if="this.cyclomediaActive && this.pictometryActive"
-                     :latlng="cycloLatlng"
-                     :rotationAngle="cycloRotationAngle"
-                     :hFov="cycloHFov"
-          />
-        </pictometry-widget>
-      </map-panel> -->
   </div>
 </template>
 
 <script>
-  // import philaVueMapping from '@cityofphiladelphia/phila-vue-mapping';
-
   import TopicPanel from './TopicPanel.vue';
-  // import MapPanel from './MapPanel.vue';
-
-  // const CyclomediaWidget = philaVueMapping.CyclomediaWidget;
-  // const PictometryWidget = philaVueMapping.PictometryWidget;
-  // const Layer = philaVueMapping.PictometryLayer;
-  // const ViewCone = philaVueMapping.PictometryViewCone;
-  // const PngMarker = philaVueMapping.PictometryPngMarker;
-
-  // import CyclomediaWidget from '../cyclomedia/Widget.vue';
-  // import PictometryWidget from '../pictometry/Widget.vue';
-  // import Layer from '../pictometry/Layer.vue';
-  // import PngMarker from '../pictometry/PngMarker.vue';
-  // import ViewCone from '../pictometry/ViewCone.vue';
 
   export default {
     components: {
       TopicPanel,
-      // MapPanel,
-      // CyclomediaWidget,
-      // PictometryWidget,
-      // Layer,
-      // PngMarker,
-      // ViewCone
     },
     data() {
       const data = {
@@ -85,6 +29,9 @@
       window.addEventListener('resize', this.handleWindowResize);
       this.handleWindowResize();
     },
+    mounted() {
+      this.$controller.appDidLoad();
+    },
     computed: {
       rootClass() {
         if (this.$config.plugin) {
@@ -96,15 +43,6 @@
       isMobileOrTablet() {
         return this.$store.state.isMobileOrTablet;
       },
-      shouldLoadCyclomediaWidget() {
-        return this.$config.cyclomedia.enabled && !this.isMobileOrTablet;
-      },
-      shouldLoadPictometryWidget() {
-        return this.$config.pictometry.enabled && !this.isMobileOrTablet;
-      },
-      fullScreenMapEnabled() {
-        return this.$store.state.fullScreenMapEnabled;
-      },
       shouldShowTopicPanel() {
         let value = 'topic-panel-true';
         if (this.fullScreenMapEnabled) {
@@ -112,39 +50,6 @@
         }
         return value;
       },
-      // cyclomediaActive() {
-      //   return this.$store.state.cyclomedia.active
-      // },
-      // cycloLatlng() {
-      //   if (this.$store.state.cyclomedia.orientation.xyz !== null) {
-      //     const xyz = this.$store.state.cyclomedia.orientation.xyz;
-      //     return [xyz[1], xyz[0]];
-      //   } else {
-      //     const center = this.$config.map.center;
-      //     return center;
-      //   }
-      // },
-      // cycloRotationAngle() {
-      //   return this.$store.state.cyclomedia.orientation.yaw * (180/3.14159265359);
-      // },
-      // cycloHFov() {
-      //   return this.$store.state.cyclomedia.orientation.hFov;
-      // },
-      // pictometryActive() {
-      //   return this.$store.state.pictometry.active
-      // },
-      // pictometryZoom() {
-      //   return this.$store.state.pictometry.zoom
-      // },
-      // pictometryShowAddressMarker() {
-      //   if (!this.pictometryActive || !this.geocodeData) {
-      //     return false;
-      //   } else if (this.pictometryZoom < 20 && this.cyclomediaActive) {
-      //     return false;
-      //   } else {
-      //     return true;
-      //   }
-      // },
       geocodeData() {
         return this.$store.state.geocode.data
       },
@@ -185,14 +90,9 @@
         }
       }
     },
-    watch: {
-      // pictometryShowAddressMarker(nextValue) {
-      //   console.log('watch pictometryShowAddressMarker', nextValue);
-      // }
-    },
     methods: {
       closeAddressCandidateList() {
-        this.$store.state.map.shouldShowAddressCandidateList = false;
+        this.$store.state.shouldShowAddressCandidateList = false;
       },
       handleWindowResize() {
         // this only actually affects the size if it is set to "plugin mode"

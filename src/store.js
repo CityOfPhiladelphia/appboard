@@ -154,12 +154,6 @@ function createStore(config) {
       };
     } else {
       val = null;
-      // val = {
-      //   geometry: null,
-      //   id: null,
-      //   properties: null,
-      //   type: null
-      // };
     }
 
     o[key] = val;
@@ -169,7 +163,6 @@ function createStore(config) {
 
   const initialState = {
     isMobileOrTablet: isMobileDevice(),
-    fullScreenMapEnabled: false,
 
     // this gets set to the parcel layer for the default (aka first) topic in
     // DataManager.resetGeocode, which is called by Router.hashChanged on app
@@ -184,91 +177,13 @@ function createStore(config) {
       data: null,
       input: null,
       related: null,
-      // forwardStatus: null,
-      // reverseStatus: null,
     },
     lastSearchMethod: 'geocode',
-    // the leaflet map object
-    map: {
-      location: {
-        lat: null,
-        lng: null
-      },
-      center: config.map.center,
-      bounds: {
-        northEast: null,
-        southWest: null,
-      },
-      zoom: config.map.zoom,
-      boundsBasedOnShape: null,
-      map: null,
-      // this gets set to the parcel layer for the default topic by
-      // DataManager.resetGeocode; see note above for activeTopic and
-      // activeParcelLayer.
-      basemap: '',
-      imagery: 'imagery2017',
-      shouldShowImagery: false,
-      // circleMarkers: [],
-      // this is the key for the active overlay image (eg regmap)
-      imageOverlay: null,
-      imageOverlayOpacity: null,
-      filters: [],
-      watchPositionOn: false,
-      shouldShowAddressCandidateList: false,
-      candidates: [],
-      addressEntered: null,
-      // features: {
-      //   markers: [
-      //     // {
-      //     //   geometry: '',
-      //     //   // optional - mainly for symbology
-      //     //   options: {}
-      //     // }
-      //   ],
-      //   polygons: [
-      //
-      //   ]
-      // }
-    },
+    shouldShowAddressCandidateList: false,
+    candidates: [],
+    addressEntered: null,
     parcels,
-    // dorParcels: {
-    //   data: [],
-    //   status: null
-    // },
-    // activeDorParcel: null,
-    // activeDorAddress: null,
-    // activeDorMapreg: null,
-    // pwdParcel: null,
     sources,
-    cyclomedia: {
-      initialized: false,
-      navBarOpen: false,
-      // surfaceCursorOn: true,
-      latLngFromMap: null,
-      orientation: {
-        yaw: null,
-        hFov: null,
-        xyz: null,
-      },
-      active: false,
-      recordings: [],
-    },
-    // we need this to know whether or not to force an update on the first show
-    pictometry: {
-      ipa: null,
-      active: false,
-      shapeIds: [],
-      pngMarkerIds: [],
-      zoom: null,
-      // this is the state of the main leaflet map. when these values change
-      // the pictometry widget should react. the reason these are duplicated
-      // here is to avoid an infinite loop in the Map component when the
-      // viewport changes.
-      map: {
-        center: config.map.center,
-        zoom: config.map.zoom
-      }
-    },
     horizontalTables: {
       // table id => filtered rows
       filteredData: createFilteredData(config),
@@ -309,24 +224,8 @@ function createStore(config) {
       }
     },
     mutations: {
-      setCyclomediaInitialized(state, payload) {
-        state.cyclomedia.initialized = payload;
-      },
       setIsMobileOrTablet(state, payload) {
         state.isMobileOrTablet = payload;
-      },
-      setFullScreenMapEnabled(state, payload) {
-        state.fullScreenMapEnabled = payload;
-      },
-      setLocation(state, payload) {
-        state.map.location.lat = payload.lat;
-        state.map.location.lng = payload.lng;
-      },
-      setWatchPositionOn(state, payload) {
-        state.map.watchPositionOn = payload;
-      },
-      setClickCoords(state, payload) {
-        state.clickCoords = payload;
       },
       setHorizontalTableGroupActiveTable(state, payload) {
         // console.log('setHorizontalTableGroupActiveTable, payload:', payload);
@@ -408,9 +307,9 @@ function createStore(config) {
         state.sources[key].data.page = nextPage;
         // }
       },
-      setMapFilters(state, payload) {
-        state.map.filters = payload;
-      },
+      // setMapFilters(state, payload) {
+      //   state.map.filters = payload;
+      // },
       // this sets empty targets for a data source
       createEmptySourceTargets(state, payload) {
         const {key, targetIds} = payload;
@@ -426,25 +325,25 @@ function createStore(config) {
         const key = payload.key;
         state.sources[key].targets = {};
       },
-      setMap(state, payload) {
-        state.map.map = payload.map;
-      },
+      // setMap(state, payload) {
+      //   state.map.map = payload.map;
+      // },
       // this is the map center as an xy coordinate array (not latlng)
-      setMapCenter(state, payload) {
-        state.map.center = payload;
-      },
-      setMapZoom(state, payload) {
-        state.map.zoom = payload;
-      },
-      setMapBounds(state, payload) {
-        // const { northEast, southWest } = payload || {};
-        // state.map.bounds.northEast = northEast;
-        // state.map.bounds.southWest = southWest;
-        state.map.bounds = payload;
-      },
-      setMapBoundsBasedOnShape(state, payload) {
-        state.map.boundsBasedOnShape = payload
-      },
+      // setMapCenter(state, payload) {
+      //   state.map.center = payload;
+      // },
+      // setMapZoom(state, payload) {
+      //   state.map.zoom = payload;
+      // },
+      // setMapBounds(state, payload) {
+      //   // const { northEast, southWest } = payload || {};
+      //   // state.map.bounds.northEast = northEast;
+      //   // state.map.bounds.southWest = southWest;
+      //   state.map.bounds = payload;
+      // },
+      // setMapBoundsBasedOnShape(state, payload) {
+      //   state.map.boundsBasedOnShape = payload
+      // },
       setParcelData(state, payload) {
         // console.log('store setParcelData payload:', payload);
         const { parcelLayer, data, multipleAllowed, status, activeParcel, activeAddress, activeMapreg } = payload || {};
@@ -502,50 +401,14 @@ function createStore(config) {
       setGeocodeInput(state, payload) {
         state.geocode.input = payload;
       },
-      setBasemap(state, payload) {
-        state.map.basemap = payload;
-      },
-      setImagery(state, payload) {
-        state.map.imagery = payload;
-      },
-      setShouldShowImagery(state, payload) {
-        state.map.shouldShowImagery = payload;
-      },
-      setPictometryActive(state, payload) {
-        if (!config.pictometry.enabled) {
-          return;
-        }
-        state.pictometry.active = payload;
-      },
-      setCyclomediaActive(state, payload) {
-        if (!config.cyclomedia.enabled) {
-          return;
-        }
-        state.cyclomedia.active = payload;
-      },
-      setCyclomediaYaw(state, payload) {
-        state.cyclomedia.orientation.yaw = payload
-      },
-      setCyclomediaHFov(state, payload) {
-        state.cyclomedia.orientation.hFov = payload
-      },
-      setCyclomediaXyz(state, payload) {
-        state.cyclomedia.orientation.xyz = payload
-      },
-      setCyclomediaRecordings(state, payload) {
-        state.cyclomedia.recordings = payload;
-      },
-      setCyclomediaLatLngFromMap(state, payload) {
-        state.cyclomedia.latLngFromMap = payload;
-        // const { lat, lng } = payload || {};
-        // state.cyclomedia.latLngFromMap[0] = lat;
-        // state.cyclomedia.latLngFromMap[1] = lng;
-      },
-      setCyclomediaNavBarOpen(state, payload) {
-        state.cyclomedia.navBarOpen = payload;
-      },
-      // setCyclomediaSurfaceCursorOn(state, payload) {
-      //   state.cyclomedia.surfaceCursorOn = payload;
+      // setBasemap(state, payload) {
+      //   state.map.basemap = payload;
+      // },
+      // setImagery(state, payload) {
+      //   state.map.imagery = payload;
+      // },
+      // setShouldShowImagery(state, payload) {
+      //   state.map.shouldShowImagery = payload;
       // },
       setActiveFeature(state, payload) {
         // console.log('store setActiveFeature is running');
@@ -556,42 +419,14 @@ function createStore(config) {
       setLastSearchMethod(state, payload) {
         state.lastSearchMethod = payload;
       },
-      setPictometryIpa(state, payload) {
-        state.pictometry.ipa = payload;
-      },
-      setPictometryShapeIds(state, payload) {
-        state.pictometry.shapeIds = payload;
-      },
-      setPictometryPngMarkerIds(state, payload) {
-        state.pictometry.pngMarkerIds = payload;
-      },
-      // this is the leaflet map center updated when the map is moved
-      setPictometryMapCenter(state, payload) {
-        state.pictometry.map.center = payload;
-      },
-      setPictometryMapZoom(state, payload) {
-        state.pictometry.map.zoom = payload;
-      },
-      setPictometryZoom(state, payload) {
-        state.pictometry.zoom = payload;
-      },
-      setImageOverlay(state, payload) {
-        state.map.imageOverlay = payload;
-      },
-      setImageOverlayOpacity(state, payload) {
-        state.map.imageOverlayOpacity = payload;
-      },
-      // setCircleMarkers(state, payload) {
-      //   state.map.circleMarkers.push(payload);
-      // }
       setShouldShowAddressCandidateList(state, payload) {
-        state.map.shouldShowAddressCandidateList = payload;
+        state.shouldShowAddressCandidateList = payload;
       },
       setCandidates(state, payload) {
-        state.map.candidates = payload;
+        state.candidates = payload;
       },
       setAddressEntered(state, payload) {
-        state.map.addressEntered = payload;
+        state.addressEntered = payload;
       }
     }
   });
