@@ -1,7 +1,7 @@
 {
   "name": "@cityofphiladelphia/appboard",
   "description": "A Vue.js component for data-rich applications",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "City of Philadelphia <maps@phila.gov>",
   "scripts": {
     "build": "rollup -c rollup.config.js",
