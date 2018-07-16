@@ -2,26 +2,41 @@
   <div id="topic-panel-container"
        :class="this.topicPanelContainerClass"
   >
+      <div class="address-header">
+
+        <div class="medium-12 address-container">
+          <h1 class="address-header-line-1">
+            <!-- <i class="fa fa-map-marker"></i> -->
+            {{ address }}
+          </h1>
+          <div class="address-header-line-2"
+               v-show="this.geocode"
+          >
+            PHILADELPHIA, PA {{ zipCode }}
+          </div>
+        </div>
+
+        <address-input v-if="this.shouldShowAddressInput"
+                       class="address-input-class"
+        />
+        <address-candidate-list v-if="this.addressAutocompleteEnabled && this.shouldShowAddressInput"
+                                class="add-candidates-class"
+        />
+
+      </div>
       <!-- before search -->
       <greeting v-show="shouldShowGreeting" />
 
       <!-- after search -->
       <div v-if="!shouldShowGreeting" class="topic-panel-content cell">
         <!-- address header -->
-        <div class="address-header">
-          <h1 class="address-header-line-1">
-            <i class="fa fa-map-marker"></i>
-            {{ address }}
-          </h1>
-          <div class="address-header-line-2">PHILADELPHIA, PA {{ zipCode }}</div>
-        </div>
 
         <!-- topics container -->
         <div class="topics-container cell medium-cell-block-y"
              :style="styleObject"
         >
-          <address-input v-if="this.shouldShowAddressInput" />
-          <address-candidate-list v-if="this.addressAutocompleteEnabled && this.shouldShowAddressInput" />
+          <!-- <address-input v-if="this.shouldShowAddressInput" />
+          <address-candidate-list v-if="this.addressAutocompleteEnabled && this.shouldShowAddressInput" /> -->
 
           <topic v-for="topic in this.$config.topics"
                  :topicKey="topic.key"
@@ -79,15 +94,16 @@
           return false;
         }
       },
-      fullScreenMapEnabled() {
-        return this.$store.state.fullScreenMapEnabled;
-      },
+      // fullScreenMapEnabled() {
+      //   return this.$store.state.fullScreenMapEnabled;
+      // },
       topicPanelContainerClass() {
-        if (this.fullScreenMapEnabled) {
-          return 'cell medium-1 small-order-2 medium-order-1'
-        } else {
-          return 'cell medium-12 small-order-2 medium-order-1'
-        }
+        // if (this.fullScreenMapEnabled) {
+          return 'cell medium-24'
+          // return 'cell medium-1 small-order-2 medium-order-1'
+        // } else {
+        //   return 'cell medium-12 small-order-2 medium-order-1'
+        // }
       },
       geocode() {
         return this.$store.state.geocode.data;
@@ -103,7 +119,7 @@
         const geocode = this.geocode;
         const dorParcels = this.$store.state.parcels.dor.data;
         const activeDorAddress = this.$store.state.parcels.dor.activeAddress;
-        let address;
+        let address = "BEGIN REAL ESTATE TAX PAYMENT";
 
         if (geocode) {
           // TODO make this not ais-specific
@@ -187,6 +203,18 @@
 
   .address-header-line-2 {
     padding: 0px;
+  }
+
+  .address-container {
+    display: inline-block;
+  }
+
+  .address-input-class {
+    display: inline-block;
+  }
+
+  .address-candidates-class {
+    display: inline-block;
   }
 
   .topics-container {

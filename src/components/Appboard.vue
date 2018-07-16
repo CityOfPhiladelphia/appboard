@@ -44,16 +44,16 @@
 </template>
 
 <script>
-  import philaVueMapping from '@cityofphiladelphia/phila-vue-mapping';
+  // import philaVueMapping from '@cityofphiladelphia/phila-vue-mapping';
 
   import TopicPanel from './TopicPanel.vue';
-  import MapPanel from './MapPanel.vue';
+  // import MapPanel from './MapPanel.vue';
 
-  const CyclomediaWidget = philaVueMapping.CyclomediaWidget;
-  const PictometryWidget = philaVueMapping.PictometryWidget;
-  const Layer = philaVueMapping.PictometryLayer;
-  const ViewCone = philaVueMapping.PictometryViewCone;
-  const PngMarker = philaVueMapping.PictometryPngMarker;
+  // const CyclomediaWidget = philaVueMapping.CyclomediaWidget;
+  // const PictometryWidget = philaVueMapping.PictometryWidget;
+  // const Layer = philaVueMapping.PictometryLayer;
+  // const ViewCone = philaVueMapping.PictometryViewCone;
+  // const PngMarker = philaVueMapping.PictometryPngMarker;
 
   // import CyclomediaWidget from '../cyclomedia/Widget.vue';
   // import PictometryWidget from '../pictometry/Widget.vue';
@@ -64,12 +64,12 @@
   export default {
     components: {
       TopicPanel,
-      MapPanel,
-      CyclomediaWidget,
-      PictometryWidget,
-      Layer,
-      PngMarker,
-      ViewCone
+      // MapPanel,
+      // CyclomediaWidget,
+      // PictometryWidget,
+      // Layer,
+      // PngMarker,
+      // ViewCone
     },
     data() {
       const data = {
@@ -112,39 +112,39 @@
         }
         return value;
       },
-      cyclomediaActive() {
-        return this.$store.state.cyclomedia.active
-      },
-      cycloLatlng() {
-        if (this.$store.state.cyclomedia.orientation.xyz !== null) {
-          const xyz = this.$store.state.cyclomedia.orientation.xyz;
-          return [xyz[1], xyz[0]];
-        } else {
-          const center = this.$config.map.center;
-          return center;
-        }
-      },
-      cycloRotationAngle() {
-        return this.$store.state.cyclomedia.orientation.yaw * (180/3.14159265359);
-      },
-      cycloHFov() {
-        return this.$store.state.cyclomedia.orientation.hFov;
-      },
-      pictometryActive() {
-        return this.$store.state.pictometry.active
-      },
-      pictometryZoom() {
-        return this.$store.state.pictometry.zoom
-      },
-      pictometryShowAddressMarker() {
-        if (!this.pictometryActive || !this.geocodeData) {
-          return false;
-        } else if (this.pictometryZoom < 20 && this.cyclomediaActive) {
-          return false;
-        } else {
-          return true;
-        }
-      },
+      // cyclomediaActive() {
+      //   return this.$store.state.cyclomedia.active
+      // },
+      // cycloLatlng() {
+      //   if (this.$store.state.cyclomedia.orientation.xyz !== null) {
+      //     const xyz = this.$store.state.cyclomedia.orientation.xyz;
+      //     return [xyz[1], xyz[0]];
+      //   } else {
+      //     const center = this.$config.map.center;
+      //     return center;
+      //   }
+      // },
+      // cycloRotationAngle() {
+      //   return this.$store.state.cyclomedia.orientation.yaw * (180/3.14159265359);
+      // },
+      // cycloHFov() {
+      //   return this.$store.state.cyclomedia.orientation.hFov;
+      // },
+      // pictometryActive() {
+      //   return this.$store.state.pictometry.active
+      // },
+      // pictometryZoom() {
+      //   return this.$store.state.pictometry.zoom
+      // },
+      // pictometryShowAddressMarker() {
+      //   if (!this.pictometryActive || !this.geocodeData) {
+      //     return false;
+      //   } else if (this.pictometryZoom < 20 && this.cyclomediaActive) {
+      //     return false;
+      //   } else {
+      //     return true;
+      //   }
+      // },
       geocodeData() {
         return this.$store.state.geocode.data
       },
@@ -186,9 +186,9 @@
       }
     },
     watch: {
-      pictometryShowAddressMarker(nextValue) {
-        console.log('watch pictometryShowAddressMarker', nextValue);
-      }
+      // pictometryShowAddressMarker(nextValue) {
+      //   console.log('watch pictometryShowAddressMarker', nextValue);
+      // }
     },
     methods: {
       closeAddressCandidateList() {

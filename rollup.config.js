@@ -25,9 +25,9 @@ external.push('leaflet-vector-icon/dist/leaflet-vector-icon.css');
 export default {
   input: 'src/main.js',
   output: {
-    file: 'dist/mapboard.js',
+    file: 'dist/appboard.js',
     format: 'umd',
-    name: 'mapboard',
+    name: 'appboard',
     // silence warning about multiple exports
     exports: 'named',
     // map imports to global names for using mapboard in the browser

@@ -2,8 +2,8 @@
   <div class="mb-panel-topics-greeting">
     <div class="columns medium-20 medium-centered">
 
-      <address-input v-if="this.shouldShowAddressInput" />
-      <address-candidate-list v-if="this.addressAutocompleteEnabled && this.shouldShowAddressInput"/>
+      <!-- <address-input v-if="this.shouldShowAddressInput" />
+      <address-candidate-list v-if="this.addressAutocompleteEnabled && this.shouldShowAddressInput"/> -->
 
       <div v-if="!components && !hasError" class="greeting" v-html="initialMessage">
       </div>
