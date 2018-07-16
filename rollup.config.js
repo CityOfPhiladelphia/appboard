@@ -18,10 +18,6 @@ import path from 'path';
 const pkg = JSON.parse(fs.readFileSync(path.resolve('./package.json'), 'utf-8'));
 const external = Object.keys(pkg.dependencies || {});
 
-// don't bundle this css either
-external.push('leaflet-measure/dist/leaflet-measure.css');
-external.push('leaflet-vector-icon/dist/leaflet-vector-icon.css');
-
 export default {
   input: 'src/main.js',
   output: {
@@ -32,17 +28,12 @@ export default {
     exports: 'named',
     // map imports to global names for using mapboard in the browser
     globals: {
-      leaflet: 'L',
-      'esri-leaflet': 'L.esri',
       moment: 'moment',
-      'leaflet-measure': 'L.Control.Measure',
-      'leaflet-vector-icon': 'leafletVectorIcon',
       jquery: '$',
       axios: 'axios',
       vue: 'Vue',
       vuex: 'Vuex',
       proj4: 'proj4',
-      'blueimp-md5': 'md5',
       '@turf/helpers': 'turf',
       '@turf/distance': 'turf.distance',
       '@turf/area': 'turf.area',
