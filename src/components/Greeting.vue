@@ -26,8 +26,6 @@
   export default {
     components: {
       Image_,
-      AddressInput,
-      AddressCandidateList,
     },
     computed: {
       components() {
