@@ -18,9 +18,11 @@
 
         <address-input v-if="this.shouldShowAddressInput"
                        class="address-input-class"
-        />
-        <address-candidate-list v-if="this.addressAutocompleteEnabled && this.shouldShowAddressInput"
-                                class="add-candidates-class"
+        >
+          <address-candidate-list v-if="this.addressAutocompleteEnabled && this.shouldShowAddressInput"
+                                  class="add-candidates-class"
+                                  slot="address-candidates-slot"
+          />
         />
 
       </div>
