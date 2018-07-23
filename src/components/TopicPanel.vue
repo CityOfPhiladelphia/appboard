@@ -16,11 +16,9 @@
           </div>
         </div>
 
-        <address-input v-if="this.shouldShowAddressInput"
-                       class="address-input-class"
-        >
-          <address-candidate-list v-if="this.addressAutocompleteEnabled && this.shouldShowAddressInput"
-                                  class="add-candidates-class"
+        <address-input class="address-input-class">
+          <address-candidate-list v-if="this.addressAutocompleteEnabled"
+                                  class="address-candidates-class"
                                   slot="address-candidates-slot"
           />
         />
@@ -31,7 +29,6 @@
 
       <!-- after search -->
       <div v-if="!shouldShowGreeting" class="topic-panel-content cell">
-        <!-- address header -->
 
         <!-- topics container -->
         <div class="topics-container cell medium-cell-block-y"
@@ -74,17 +71,7 @@
       window.addEventListener('resize', this.handleWindowResize);
       this.handleWindowResize();
     },
-    // beforeDestroy() {
-    //   window.removeEventListener('resize', this.handleWindowResize);
-    // },
     computed: {
-      shouldShowAddressInput() {
-        if (this.$config.addressInputLocation == 'topics') {
-          return true;
-        } else {
-          return false;
-        }
-      },
       addressAutocompleteEnabled() {
         // TODO tidy up the code
         if (this.$config.addressAutocomplete.enabled === true) {
@@ -93,16 +80,8 @@
           return false;
         }
       },
-      // fullScreenMapEnabled() {
-      //   return this.$store.state.fullScreenMapEnabled;
-      // },
       topicPanelContainerClass() {
-        // if (this.fullScreenMapEnabled) {
-          return 'cell medium-24'
-          // return 'cell medium-1 small-order-2 medium-order-1'
-        // } else {
-        //   return 'cell medium-12 small-order-2 medium-order-1'
-        // }
+        return 'cell medium-24'
       },
       geocode() {
         return this.$store.state.geocode.data;

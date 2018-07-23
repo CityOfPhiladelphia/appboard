@@ -171,14 +171,13 @@ function createStore(config) {
     activeParcelLayer: '',
 
     // the ais feature
-    clickCoords: null,
     geocode: {
       status: null,
       data: null,
       input: null,
       related: null,
     },
-    lastSearchMethod: 'geocode',
+    // lastSearchMethod: 'geocode',
     shouldShowAddressCandidateList: false,
     candidates: [],
     addressEntered: null,
@@ -307,9 +306,6 @@ function createStore(config) {
         state.sources[key].data.page = nextPage;
         // }
       },
-      // setMapFilters(state, payload) {
-      //   state.map.filters = payload;
-      // },
       // this sets empty targets for a data source
       createEmptySourceTargets(state, payload) {
         const {key, targetIds} = payload;
@@ -325,25 +321,6 @@ function createStore(config) {
         const key = payload.key;
         state.sources[key].targets = {};
       },
-      // setMap(state, payload) {
-      //   state.map.map = payload.map;
-      // },
-      // this is the map center as an xy coordinate array (not latlng)
-      // setMapCenter(state, payload) {
-      //   state.map.center = payload;
-      // },
-      // setMapZoom(state, payload) {
-      //   state.map.zoom = payload;
-      // },
-      // setMapBounds(state, payload) {
-      //   // const { northEast, southWest } = payload || {};
-      //   // state.map.bounds.northEast = northEast;
-      //   // state.map.bounds.southWest = southWest;
-      //   state.map.bounds = payload;
-      // },
-      // setMapBoundsBasedOnShape(state, payload) {
-      //   state.map.boundsBasedOnShape = payload
-      // },
       setParcelData(state, payload) {
         // console.log('store setParcelData payload:', payload);
         const { parcelLayer, data, multipleAllowed, status, activeParcel, activeAddress, activeMapreg } = payload || {};
@@ -365,30 +342,6 @@ function createStore(config) {
         state.parcels[parcelLayer].activeAddress = activeAddress;
         state.parcels[parcelLayer].activeMapreg = activeMapreg;
       },
-      // setDorParcelData(state, payload) {
-      //   state.dorParcels.data = payload;
-      //   // state.parcels.dor.data = payload;
-      // },
-      // setDorParcelStatus(state, payload) {
-      //   state.dorParcels.status = payload;
-      //   // state.parcels.dor.status = payload;
-      // },
-      // setActiveDorParcel(state, payload) {
-      //   state.activeDorParcel = payload;
-      //   // state.parcels.dor.activeParcel = payload;
-      // },
-      // setActiveDorAddress(state, payload) {
-      //   state.activeDorAddress = payload;
-      //   // state.parcels.dor.activeAddress = payload;
-      // },
-      // setActiveDorMapreg(state, payload) {
-      //   state.activeDorMapreg = payload;
-      //   // state.parcels.dor.activeMapreg = payload;
-      // },
-      // setPwdParcel(state, payload) {
-      //   state.pwdParcel = payload;
-      //   // state.parcels.pwd = payload;
-      // },
       setGeocodeStatus(state, payload) {
         state.geocode.status = payload;
       },
@@ -401,23 +354,11 @@ function createStore(config) {
       setGeocodeInput(state, payload) {
         state.geocode.input = payload;
       },
-      // setBasemap(state, payload) {
-      //   state.map.basemap = payload;
-      // },
-      // setImagery(state, payload) {
-      //   state.map.imagery = payload;
-      // },
-      // setShouldShowImagery(state, payload) {
-      //   state.map.shouldShowImagery = payload;
-      // },
       setActiveFeature(state, payload) {
         // console.log('store setActiveFeature is running');
         const { featureId, tableId } = payload || {};
         const nextActiveFeature = { featureId, tableId };
         state.activeFeature = nextActiveFeature;
-      },
-      setLastSearchMethod(state, payload) {
-        state.lastSearchMethod = payload;
       },
       setShouldShowAddressCandidateList(state, payload) {
         state.shouldShowAddressCandidateList = payload;

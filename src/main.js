@@ -8,6 +8,7 @@ import generateUniqueId from './util/unique-id';
 
 // import controllerMixin from './controller';
 import controllerMixinShell from '@cityofphiladelphia/phila-vue-datafetch';
+console.log('controllerMixinShell:', controllerMixinShell);
 const controllerMixin = controllerMixinShell.controllerMixin;
 
 // helper function to auto-assign ids to horizontal tables
@@ -19,7 +20,6 @@ function assignTableIds(comps) {
     // if this is a "group" component, recurse
     if (innerComps) {
       assignTableIds(innerComps);
-      // return;
     }
 
     // skip comps that aren't horizontal tables

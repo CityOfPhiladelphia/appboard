@@ -1,15 +1,15 @@
-# mapboard
+# appboard
 
-Mapboard is a framework for building data-rich mapping applications for the City of Philadelphia.
+Appboard is a framework for building data-rich applications for the City of Philadelphia.
 
-![Atlas](http://i.imgur.com/GcZpsgX.png)
+![Atlas](https://s3.amazonaws.com/mapboard-images/Appboard.JPG)
 
 ## Usage
-Check out [the wiki](https://github.com/CityOfPhiladelphia/mapboard/wiki) for usage documentation.
+Check out [the wiki](https://github.com/CityOfPhiladelphia/appboard/wiki) for usage documentation.
 
 ## Publishing
 
-To publish a new version of Mapboard to NPM:
+To publish a new version of Appboard to NPM:
 
 1. Commit your changes to `master`.
 2. Bump the NPM version with `npm version major|minor|patch`.

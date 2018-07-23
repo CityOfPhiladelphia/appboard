@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@cityofphiladelphia/phila-vue-comps@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@cityofphiladelphia/phila-vue-comps/-/phila-vue-comps-0.0.5.tgz#6ae6171caad038bc627ca8138d6c50ac2150b328"
+"@cityofphiladelphia/phila-vue-comps@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@cityofphiladelphia/phila-vue-comps/-/phila-vue-comps-0.0.6.tgz#8c8a64e5c8ff3d98ef18eb649f3fbc9f5caeaa96"
   dependencies:
     axios "^0.18.0"
     jquery "^3.2.1"
@@ -15,9 +15,9 @@
     vue "^2.5.16"
     vuex "^3.0.1"
 
-"@cityofphiladelphia/phila-vue-datafetch@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@cityofphiladelphia/phila-vue-datafetch/-/phila-vue-datafetch-0.0.5.tgz#fae8de6aac6540132729dc567f96070ad7538a83"
+"@cityofphiladelphia/phila-vue-datafetch@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@cityofphiladelphia/phila-vue-datafetch/-/phila-vue-datafetch-0.0.6.tgz#49b2da8671780d48c4bd3f3e7260d03f503b2afc"
   dependencies:
     "@turf/turf" "^5.1.6"
     axios "^0.18.0"
