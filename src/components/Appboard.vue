@@ -1,19 +1,57 @@
 <template>
-  <div id="mb-root"
+  <div id="ab-root"
        :class="rootClass"
-       :style="styleObject"
   >
-      <topic-panel :class="this.shouldShowTopicPanel"
-      />
+  <!-- :style="styleObject" -->
+    <div id="address-container"
+         :class="'cell small-24'"
+    >
+      <div class="address-header">
+        <div class="medium-12 address-container">
+          <h1 class="address-header-line-1">
+            {{ address }}
+          </h1>
+          <div class="address-header-line-2"
+               v-show="this.geocode"
+          >
+            PHILADELPHIA, PA {{ zipCode }}
+          </div>
+        </div>
+
+        <address-input class="address-input-class">
+          <address-candidate-list v-if="this.addressAutocompleteEnabled"
+                                  class="address-candidates-class"
+                                  slot="address-candidates-slot"
+          />
+        />
+
+      </div>
+    </div>
+
+    <greeting v-show="shouldShowGreeting" />
+
+    <div v-if="!shouldShowGreeting"
+         class="components-container cell medium-cell-block-y"
+    >
+      <topic-component-group :topic-components="appConfig.components" />
+    </div>
+
   </div>
 </template>
 
 <script>
-  import TopicPanel from './TopicPanel.vue';
+  import philaVueComps from '@cityofphiladelphia/phila-vue-comps';
+  const TopicComponentGroup = philaVueComps.TopicComponentGroup;
+  const Greeting = philaVueComps.Greeting;
+  const AddressInput = philaVueComps.AddressInput;
+  const AddressCandidateList = philaVueComps.AddressCandidateList;
 
   export default {
     components: {
-      TopicPanel,
+      TopicComponentGroup,
+      Greeting,
+      AddressInput,
+      AddressCandidateList,
     },
     data() {
       const data = {
@@ -33,6 +71,9 @@
       this.$controller.appDidLoad();
     },
     computed: {
+      appConfig() {
+        return this.$config;
+      },
       rootClass() {
         if (this.$config.plugin) {
           return 'grid-x';
@@ -40,55 +81,56 @@
           return 'cell medium-auto grid-x';
         }
       },
+      geocode() {
+        return this.$store.state.geocode.data;
+      },
+      addressAutocompleteEnabled() {
+        // TODO tidy up the code
+        if (this.$config.addressAutocomplete.enabled === true) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      shouldShowGreeting() {
+        return !(this.geocode || this.dorParcels);
+      },
       isMobileOrTablet() {
         return this.$store.state.isMobileOrTablet;
-      },
-      shouldShowTopicPanel() {
-        let value = 'topic-panel-true';
-        if (this.fullScreenMapEnabled) {
-          value = 'topic-panel-false';
-        }
-        return value;
       },
       geocodeData() {
         return this.$store.state.geocode.data
       },
-      ak() {
-        const host = window.location.hostname;
-        if (host === 'atlas.phila.gov') {
-          return this.$config.pictometry.apiKey;
+      address() {
+        const geocode = this.geocode;
+        const dorParcels = this.$store.state.parcels.dor.data;
+        const activeDorAddress = this.$store.state.parcels.dor.activeAddress;
+        let address = "BEGIN REAL ESTATE TAX PAYMENT";
+
+        if (geocode) {
+          // TODO make this not ais-specific
+          // REVIEW what's the difference between these two?
+          const addressA = geocode.properties.street_address;
+          const addressB = geocode.street_address;
+
+          address = addressA || addressB;
+
+        // a DOR address might be found even if there is no geocode
+        } else if (activeDorAddress) {
+          address = activeDorAddress;
         }
-        if (host === 'atlas-dev.phila.gov') {
-          return this.$config.pictometryDev.apiKey;
-        }
-        if (host === 'cityatlas.phila.gov') {
-          return this.$config.pictometryCity.apiKey;
-        }
-        if (host === 'cityatlas-dev.phila.gov') {
-          return this.$config.pictometryCityDev.apiKey;
-        }
-        if (host === '10.8.101.67') {
-          return this.$config.pictometryLocal.apiKey;
-        }
+
+        return address;
       },
-      sk() {
-        const host = window.location.hostname;
-        if (host === 'atlas.phila.gov') {
-          return this.$config.pictometry.secretKey;
-        }
-        if (host === 'atlas-dev.phila.gov') {
-          return this.$config.pictometryDev.secretKey;
-        }
-        if (host === 'cityatlas.phila.gov') {
-          return this.$config.pictometryCity.secretKey;
-        }
-        if (host === 'cityatlas-dev.phila.gov') {
-          return this.$config.pictometryCityDev.secretKey;
-        }
-        if (host === '10.8.101.67') {
-          return this.$config.pictometryLocal.secretKey;
-        }
-      }
+      zipCode() {
+        const geocode = this.geocode;
+        if (!geocode) return null;
+        const zipCode = geocode.properties.zip_code;
+        const zip4 = geocode.properties.zip_4;
+        const parts = [zipCode];
+        if (zip4) parts.push(zip4);
+        return parts.join('-');
+      },
     },
     methods: {
       closeAddressCandidateList() {
@@ -115,24 +157,55 @@
     outline: none;
   }
 
-  .mb-panel-topics-with-widget {
-    height: 50%;
-  }
-
   /* standards applies padding to buttons, which causes some weirdness with
   buttons on the map panel. override here. */
   button {
     padding: inherit;
   }
 
-  .topic-panel-false {
-    /* display: none; */
+  .components-container {
+    height: calc(100vh - 235px);
+    width: 100%;
+    padding: 40px;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
-  @media screen and (min-width: 46.875em) {
-    .topic-panel-false {
-      display: none;
-    }
+  .address-header {
+    background: #daedfe;
+    color: #0f4d90;
+    padding: 20px;
+
+    /*this keeps the box shadow over the scrollable part of the panel*/
+    position: relative;
+    z-index: 1;
+
+    -webkit-box-shadow: 0px 5px 7px -2px rgba(0,0,0,0.18);
+    -moz-box-shadow: 0px 5px 7px -2px rgba(0,0,0,0.18);
+    box-shadow: 0px 5px 7px -2px rgba(0,0,0,0.18);
+    margin-bottom: 0px !important;
+  }
+
+  .address-header-line-1 {
+    margin-bottom: 0;
+    margin-top: 0;
+    padding: 0px !important;
+  }
+
+  .address-header-line-2 {
+    padding: 0px;
+  }
+
+  .address-container {
+    display: inline-block;
+  }
+
+  .address-input-class {
+    display: inline-block;
+  }
+
+  .address-candidates-class {
+    display: inline-block;
   }
 
 </style>

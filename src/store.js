@@ -47,7 +47,7 @@ function createFilteredData(config) {
     tableIds = tableIds.concat(compTableIds);
   }
 
-  console.log('createFilteredData is running, tableIds:', tableIds);
+  // console.log('createFilteredData is running, tableIds:', tableIds);
 
   // const filteredData = tableIds.reduce((acc, tableId) => {
   //   acc[tableId] = [];
