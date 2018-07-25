@@ -1,6 +1,6 @@
 # appboard
 
-Appboard is a framework for building data-rich applications for the City of Philadelphia.  It can be used as a template for creating any application which presents information about an address and for which a map is not required.
+Appboard is a framework for building data-rich applications for the City of Philadelphia.  It can be used as a template for creating any application which presents information about an address and for which a map is not required. (If a map is required, use [Mapboard](https://github.com/CityOfPhiladelphia/mapboard).)
 
 The data returned is presented in the body of the application using components of the library [phila-vue-comps](https://github.com/CityOfPhiladelphia/phila-vue-comps), such as [Vertical Tables](https://github.com/CityOfPhiladelphia/phila-vue-comps/wiki/Vertical-Table) or [Horizontal Tables](https://github.com/CityOfPhiladelphia/phila-vue-comps/wiki/Horizontal-Table), etc.  These components may be placed right in the body of the page, or within different "topics" which can be opened and closed.  A [TopicSet](https://github.com/CityOfPhiladelphia/phila-vue-comps/wiki/TopicSet) can exist next to other permanent components.
 
