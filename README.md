@@ -6,7 +6,7 @@ The data returned is presented in the body of the application using components o
 
 Appboard uses all of the functions of the library [phila-vue-datafetch](https://github.com/CityOfPhiladelphia/phila-vue-datafetch), allowing it to return data based on any address.
 
-![Atlas](https://s3.amazonaws.com/mapboard-images/Appboard.JPG)
+![Atlas](https://s3.amazonaws.com/mapboard-images/Appboard_02.JPG)
 
 ## Usage
 Check out [the wiki](https://github.com/CityOfPhiladelphia/appboard/wiki) for usage documentation.
