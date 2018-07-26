@@ -202,6 +202,7 @@
 
   .address-input-class {
     display: inline-block;
+    position: absolute;
   }
 
   .address-candidates-class {
