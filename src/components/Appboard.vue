@@ -164,7 +164,7 @@
   }
 
   .components-container {
-    height: calc(100vh - 235px);
+    height: calc(100vh - 214px);
     width: 100%;
     padding: 40px;
     overflow-x: hidden;
