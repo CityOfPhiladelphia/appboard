@@ -11,7 +11,7 @@
   },
   "main": "./dist/appboard.js",
   "dependencies": {
-    "@cityofphiladelphia/phila-vue-comps": "^0.0.10",
+    "@cityofphiladelphia/phila-vue-comps": "^0.0.11",
     "@cityofphiladelphia/phila-vue-datafetch": "^0.0.8",
     "@turf/turf": "^5.1.6",
     "axios": "^0.18.0",

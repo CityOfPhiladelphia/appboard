@@ -2,30 +2,30 @@
   <div id="ab-root"
        :class="rootClass"
   >
-  <!-- :style="styleObject" -->
-    <div id="address-container"
-         :class="'cell small-24'"
-    >
-      <div class="address-header">
-        <div class="medium-12 address-container">
-          <h1 class="address-header-line-1">
-            {{ address }}
-          </h1>
-          <div class="address-header-line-2"
-               v-show="this.geocode"
-          >
-            PHILADELPHIA, PA {{ zipCode }}
-          </div>
+    <div class="cell small-24 medium-24 address-header">
+      <div class="medium-11 address-container">
+        <h1 class="address-header-line-1">
+          {{ address }}
+        </h1>
+        <div class="address-header-line-2"
+             v-show="this.geocode"
+        >
+          PHILADELPHIA, PA {{ zipCode }}
         </div>
+      </div>
 
-        <address-input class="address-input-class">
+      <div class="medium-12 input-container">
+        <address-input :position="this.addressInputPosition"
+                       :widthFromConfig="this.addressInputWidth"
+                       :placeholder="this.addressInputPlaceholder"
+        >
           <address-candidate-list v-if="this.addressAutocompleteEnabled"
-                                  class="address-candidates-class"
                                   slot="address-candidates-slot"
+                                  :widthFromConfig="this.addressInputWidth"
           />
         />
-
       </div>
+
     </div>
 
     <greeting v-show="shouldShowGreeting" />
@@ -84,9 +84,18 @@
       geocode() {
         return this.$store.state.geocode.data;
       },
+      addressInputWidth() {
+        return this.appConfig.addressInput.width;
+      },
+      addressInputPosition() {
+        return this.appConfig.addressInput.position;
+      },
+      addressInputPlaceholder() {
+        return this.appConfig.addressInput.placeholder;
+      },
       addressAutocompleteEnabled() {
         // TODO tidy up the code
-        if (this.$config.addressAutocomplete.enabled === true) {
+        if (this.$config.addressInput.autocompleteEnabled === true) {
           return true;
         } else {
           return false;
@@ -105,7 +114,10 @@
         const geocode = this.geocode;
         const dorParcels = this.$store.state.parcels.dor.data;
         const activeDorAddress = this.$store.state.parcels.dor.activeAddress;
-        let address = "BEGIN REAL ESTATE TAX PAYMENT";
+        let address;
+        if (this.$config.defaultAddressTextPlaceholder) {
+          address = this.$config.defaultAddressTextPlaceholder;
+        }
 
         if (geocode) {
           // TODO make this not ais-specific
@@ -174,8 +186,6 @@
   .address-header {
     background: #daedfe;
     color: #0f4d90;
-    padding: 20px;
-
     /*this keeps the box shadow over the scrollable part of the panel*/
     position: relative;
     z-index: 1;
@@ -198,14 +208,10 @@
 
   .address-container {
     display: inline-block;
+    padding: 20px;
   }
 
-  .address-input-class {
-    display: inline-block;
-    position: absolute;
-  }
-
-  .address-candidates-class {
+  .input-container {
     display: inline-block;
   }
 
