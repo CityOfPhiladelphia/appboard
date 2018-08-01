@@ -177,6 +177,9 @@ function createStore(config) {
       input: null,
       related: null,
     },
+    appData: {
+      propertyBalance: 0,
+    },
     // lastSearchMethod: 'geocode',
     shouldShowAddressCandidateList: false,
     candidates: [],
@@ -223,6 +226,9 @@ function createStore(config) {
       }
     },
     mutations: {
+      setPropertyBalance(state, payload) {
+        state.appData.propertyBalance = payload;
+      },
       setIsMobileOrTablet(state, payload) {
         state.isMobileOrTablet = payload;
       },
