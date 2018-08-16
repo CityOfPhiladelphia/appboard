@@ -3,7 +3,9 @@
        :class="rootClass"
   >
     <div class="cell small-24 medium-24 address-header">
-      <div class="medium-11 address-container">
+      <div class="columns small-24 medium-12 large-12 address-container"
+           :style="this.addressContainerStyle"
+      >
         <h1 class="address-header-line-1">
           {{ address }}
         </h1>
@@ -14,9 +16,10 @@
         </div>
       </div>
 
-      <div class="medium-12 input-container">
-        <address-input :position="this.addressInputPosition"
-                       :widthFromConfig="this.addressInputWidth"
+      <div class="columns small-24 medium-12 large-12 input-container"
+           :style="this.inputContainerStyle"
+      >
+        <address-input :widthFromConfig="this.addressInputWidth"
                        :placeholder="this.addressInputPlaceholder"
         >
           <address-candidate-list v-if="this.addressAutocompleteEnabled"
@@ -32,6 +35,7 @@
 
     <div v-if="!shouldShowGreeting"
          class="components-container cell medium-cell-block-y"
+         :style="this.componentsContainerStyle"
     >
       <topic-component-group :topic-components="appConfig.components" />
     </div>
@@ -56,21 +60,47 @@
     data() {
       const data = {
         // this will only affect the app size if the app is set to "plugin" mode
-        styleObject: {
-          'height': '100px'
+        componentsContainerStyle: {
+          'overflow-y': 'auto',
+          'height': '100px',
+        },
+        addressContainerStyle: {
+          'height': '100%',
+          'padding-bottom:': '20px',
+        },
+        inputContainerStyle: {
+          'align-items': 'flex-start',
+          'height': '100%',
+          'padding-top': '20px',
         }
       };
       return data;
     },
-    created() {
+    // created() {
+    // },
+    mounted() {
+      console.log('appboard mounted is running');
+      this.$controller.appDidLoad();
       window.addEventListener('click', this.closeAddressCandidateList);
       window.addEventListener('resize', this.handleWindowResize);
       this.handleWindowResize();
     },
-    mounted() {
-      this.$controller.appDidLoad();
-    },
     computed: {
+      inputAlign() {
+        if (this.appConfig.addressInput.position) {
+          const position = this.appConfig.addressInput.position;
+          switch(position) {
+            case 'left':
+              return 'flex-start';
+            case 'right':
+              return 'flex-end';
+            case 'center':
+              return 'center';
+          }
+        } else {
+          return 'flex-start';
+        }
+      },
       appConfig() {
         return this.$config;
       },
@@ -86,9 +116,6 @@
       },
       addressInputWidth() {
         return this.appConfig.addressInput.width;
-      },
-      addressInputPosition() {
-        return this.appConfig.addressInput.position;
       },
       addressInputPlaceholder() {
         return this.appConfig.addressInput.placeholder;
@@ -151,9 +178,49 @@
       handleWindowResize() {
         // this only actually affects the size if it is set to "plugin mode"
         if ($(window).width() >= 750) {
-          this.styleObject.height = '600px'
+          // this.componentsContainerStyle.height = '600px';
+          this.addressContainerStyle = {
+            'height': '100%',
+            'align-items': 'flex-start',
+            'padding-bottom': '20px',
+          }
+          this.inputContainerStyle = {
+            'height': '100%',
+            'align-items': this.inputAlign,
+            'padding-top': '20px',
+          }
+          const rootElement = document.getElementById('ab-root');
+          const rootStyle = window.getComputedStyle(rootElement);
+          const rootHeight = rootStyle.getPropertyValue('height');
+          const rootHeightNum = parseInt(rootHeight.replace('px', ''));
+          const topicsHeight = rootHeightNum - 83;
+          // console.log('rootElement:', rootElement, 'rootHeight:', rootHeight, 'rootHeightNum:', rootHeightNum, 'topicsHeight:', topicsHeight);
+          this.componentsContainerStyle.height = topicsHeight.toString() + 'px';
+          this.componentsContainerStyle['overflow-y'] = 'auto';
+
+
         } else {
-          this.styleObject.height = 'auto';
+          this.addressContainerStyle = {
+            'height': 'auto',
+            'align-items': 'center',
+            'padding-bottom': '5px',
+          }
+          this.inputContainerStyle = {
+            'height': 'auto',
+            'align-items': 'center',
+            'padding-top': '5px',
+          }
+
+          this.componentsContainerStyle.height = 'auto';
+          // const rootElement = document.getElementById('ab-root');
+          // const rootStyle = window.getComputedStyle(rootElement);
+          // const rootHeight = rootStyle.getPropertyValue('height');
+          // const rootHeightNum = parseInt(rootHeight.replace('px', ''));
+          // const topicsHeight = rootHeightNum - 83;
+          // // console.log('rootElement:', rootElement, 'rootHeight:', rootHeight, 'rootHeightNum:', rootHeightNum, 'topicsHeight:', topicsHeight);
+          // this.componentsContainerStyle.height = topicsHeight.toString() + 'px';
+
+          this.componentsContainerStyle['overflow-y'] = 'hidden';
         }
       }
     },
@@ -176,7 +243,7 @@
   }
 
   .components-container {
-    height: calc(100vh - 214px);
+    /* height: calc(100vh - 214px); */
     width: 100%;
     padding: 40px;
     overflow-x: hidden;
@@ -189,11 +256,11 @@
     /*this keeps the box shadow over the scrollable part of the panel*/
     position: relative;
     z-index: 1;
-
     -webkit-box-shadow: 0px 5px 7px -2px rgba(0,0,0,0.18);
     -moz-box-shadow: 0px 5px 7px -2px rgba(0,0,0,0.18);
     box-shadow: 0px 5px 7px -2px rgba(0,0,0,0.18);
     margin-bottom: 0px !important;
+    display: inline-block;
   }
 
   .address-header-line-1 {
@@ -207,12 +274,22 @@
   }
 
   .address-container {
-    display: inline-block;
-    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
 
   .input-container {
-    display: inline-block;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
 
 </style>
